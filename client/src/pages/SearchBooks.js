@@ -4,7 +4,7 @@ import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'reac
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
-import { SAVEBOOK } from '../utils/queries';
+import { SAVEBOOK } from '../utils/mutations';
 import { useMutation } from "@apollo/client";
 
 const SearchBooks = () => {
