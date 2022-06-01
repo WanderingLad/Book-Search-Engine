@@ -32,7 +32,7 @@ const resolvers = {
 
             return { token, user };
         },
-        saveBook: async (parent, { username, bookID }, context) => {
+        saveBook: async (parent, { bookID }, context) => {
             return User.findOneAndUpdate(
                 { _id: context.user_id },
                 { $addToSet: {savedBooks: {bookId: bookID } } },
@@ -40,10 +40,10 @@ const resolvers = {
             );
             
         },
-        deleteBook: async(parent, { bookId }, context) => {
+        deleteBook: async(parent, { bookID }, context) => {
             return User.findOneAndUpdate(
                 { _id: context.user_id},
-                { $pull: { savedBooks: { bookId: bookId } } },
+                { $pull: { savedBooks: { bookId: bookID } } },
                 { new: true }
             )
         }
