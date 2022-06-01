@@ -1,21 +1,24 @@
 const { User } = require('../models');
+const { AuthenticationError } = require("apollo-server-errors");
+const { signToken } = require("../utils/auth");
 
 const resolvers = {
     Query: {
-        singleUser: async (parent, { username }) => {
+        singleUser: async ( { username }) => {
             return User.findOne({ username })
         },
     },
 
     Mutation: {
-        createUser: async (parent, { username, email, password }) => {
-            const user = await User.create({ username, email, password });
+        createUser: async ( parent, args) => {
+            console.log(username, email, password);
+            const user = await User.create(args);
 
             const token = signToken(user);
 
             return { token, user };
         },
-        login: async (parent, { email, password }) => {
+        login: async ( { email, password }) => {
             const user = await User.findOne({ email });
 
             if(!user) {
@@ -32,7 +35,7 @@ const resolvers = {
 
             return { token, user };
         },
-        saveBook: async (parent, { bookID }, context) => {
+        saveBook: async ( { bookID }, context) => {
             return User.findOneAndUpdate(
                 { _id: context.user_id },
                 { $addToSet: {savedBooks: {bookId: bookID } } },
@@ -40,7 +43,7 @@ const resolvers = {
             );
             
         },
-        deleteBook: async(parent, { bookID }, context) => {
+        deleteBook: async( { bookID }, context) => {
             return User.findOneAndUpdate(
                 { _id: context.user_id},
                 { $pull: { savedBooks: { bookId: bookID } } },
